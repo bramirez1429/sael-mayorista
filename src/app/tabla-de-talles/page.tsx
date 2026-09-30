@@ -13,7 +13,7 @@ const sizeCharts: SizeChart[] = [
 export default function TablaDeTallesPage() {
   return <main className="sizes-page"><div className="sizes-page-shell">
     <Link className="back-link" href="/"><AppIcon name="arrow-left" /> Volver al inicio</Link>
-    <header className="sizes-page-hero"><div className="eyebrow"><span>SAEL</span> MAYORISTA</div><h1>TABLA DE TALLES</h1><p>Consultá las medidas de cada prenda antes de realizar tu pedido.</p></header>
+    <header className="sizes-page-hero"><div className="eyebrow"><span>SAEL</span> MAYORISTA</div><h1>TABLA DE TALLES</h1></header>
     <section className="size-charts" aria-label="Tablas de talles"><SizeChartGallery charts={sizeCharts} /></section>
     <WhatsAppCta />
   </div></main>;

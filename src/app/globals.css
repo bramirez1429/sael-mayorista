@@ -1,5 +1,6 @@
 :root { --sael-red: #e30613; --sael-black: #111111; --sael-white: #ffffff; --sael-background: #f7f7f7; --black: var(--sael-black); --white: var(--sael-white); --canvas: var(--sael-background); --muted: #6b6b6b; --red: var(--sael-red); }
 .app-icon { color: var(--sael-red); }
+.sizes-card .app-icon { font-size: 45px; }
 .buy-step-icon .app-icon { color: var(--sael-red); }
 .whatsapp-button .app-icon { color: inherit; }
 * { box-sizing: border-box; }
@@ -27,6 +28,9 @@ a { color: inherit; text-decoration: none; }
 .catalog-content h2 { font-size: clamp(45px, 10vw, 100px); line-height: .87; letter-spacing: -.075em; margin: 20px 0 ; color: var(--white); }
 .catalog-content h2 span { color: var(--red); }
 .catalog-logo { display: block; width: 100px; height: auto; object-fit: contain; margin-bottom: 10px; transform: translateY(-4px); }
+.catalog-page { min-height: 100vh; background: var(--canvas); }.catalog-page-shell { max-width: 1120px; margin: 0 auto; padding: 28px 20px 72px; }.catalog-page-hero { padding: 72px 0 42px; }.catalog-page-hero h1 { font-size: clamp(42px, 9vw, 84px); line-height: .95; letter-spacing: -.07em; margin: 0 0 22px; }.catalog-page-hero p { color: var(--muted); font-size: 17px; margin: 0; }.catalog-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }.product-card { min-width: 0; background: var(--white); border: 1px solid #e8e8e8; border-radius: 20px; padding: 12px; box-shadow: 0 8px 28px rgba(17,17,17,.035); }.product-image-wrapper { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 14px; background: var(--canvas); }.product-image-wrapper img { object-fit: cover; }.product-card h2 { font-size: 16px; line-height: 1.2; margin: 14px 0 6px; }.product-card p { display: -webkit-box; overflow: hidden; color: var(--muted); font-size: 13px; line-height: 1.4; margin: 0; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+@media (min-width: 900px) { .catalog-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; } }
+@media (max-width: 640px) { .catalog-page-shell { padding: 22px 16px 52px; }.catalog-page-hero { padding: 62px 0 36px; }.catalog-page-hero h1 { font-size: 48px; }.catalog-page-hero p { font-size: 15px; } }
 .catalog-content p { font-size: 17px; margin: 0 0 8px; }
 .catalog-content small { color: #a7a7a7; font-size: 13px; }
 .catalog-cta { color: var(--red); font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; }
