@@ -1,6 +1,8 @@
 import { SITE_CONFIG } from "../../config/site";
 import Link from "next/link";
+import Image from "next/image";
 import { AppIcon, type AppIconName } from "./AppIcon";
+import logoSael from "../../images/logo/logo actual 29-09-26 white.png";
 
 const WHATSAPP_LINK = `https://wa.me/${SITE_CONFIG.whatsappNumber}`;
 
@@ -111,13 +113,11 @@ export default function LandingPage() {
           </div>
 
           <div className="catalog-content">
-            <h2>
+            <Image src={logoSael} alt="SAEL" className="catalog-logo" /><h2>
               CATÁLOGO
-              <br />
-              <span>SAEL</span>
             </h2>
 
-            <p>Remeras · Mujer · Kids</p>
+            <p>Remeras y Buzos · Mujer · Niña</p>
 
             <small>
               Modelos, talles, colores y precios mayoristas.

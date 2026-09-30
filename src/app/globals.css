@@ -24,8 +24,9 @@ a { color: inherit; text-decoration: none; }
 .catalog-topline { display: flex; align-items: center; justify-content: space-between; color: #bdbdbd; font-size: 11px; letter-spacing: .16em; font-weight: 700; }
 .red-dot { width: 8px; height: 8px; background: var(--red); border-radius: 50%; }
 .catalog-content { margin: auto 0 38px; position: relative; z-index: 1; }
-.catalog-content h2 { font-size: clamp(45px, 10vw, 100px); line-height: .87; letter-spacing: -.075em; margin: 0 0 28px; color: var(--white); }
+.catalog-content h2 { font-size: clamp(45px, 10vw, 100px); line-height: .87; letter-spacing: -.075em; margin: 20px 0 ; color: var(--white); }
 .catalog-content h2 span { color: var(--red); }
+.catalog-logo { display: block; width: 100px; height: auto; object-fit: contain; margin-bottom: 10px; transform: translateY(-4px); }
 .catalog-content p { font-size: 17px; margin: 0 0 8px; }
 .catalog-content small { color: #a7a7a7; font-size: 13px; }
 .catalog-cta { color: var(--red); font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; }
