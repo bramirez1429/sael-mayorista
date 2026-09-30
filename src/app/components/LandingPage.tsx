@@ -35,6 +35,38 @@ const landingCards: LandingCard[] = [
     description:
       "Podés combinar modelos, talles y colores hasta completar el mínimo.",
     href: "/compra-minima",
+    arrow: true,
+  },
+  
+  {
+    id: "como-comprar",
+    className: "info-card how-card how-card-link",
+    icon: "credit-card",
+    title: "CÓMO COMPRAR",
+    description:
+      "Conocé cómo realizar tu pedido mayorista de forma simple y rápida.",
+    href: "/como-comprar",
+    arrow: true,
+  },
+  {
+    id: "tabla-talles",
+    className: "info-card sizes-card",
+    icon: "measure",
+    title: "Tabla de talles",
+    description:
+      "Consultá las medidas y encontrá el talle ideal para cada prenda.",
+    href: "/tabla-de-talles",
+    arrow: true,
+  },
+  {
+    id: "about",
+    className: "info-card about-card",
+    icon: "team",
+    href: "/quienes-somos",
+    arrow: true,
+    title: "Quiénes somos",
+    description:
+      "Somos SAEL. Indumentaria para emprendedores y negocios que buscan variedad, calidad y diseño.",
   },
   {
     id: "contacto",
@@ -48,24 +80,6 @@ const landingCards: LandingCard[] = [
       icon: "whatsapp",
     },
   },
-  {
-    id: "como-comprar",
-    className: "info-card how-card how-card-link",
-    icon: "credit-card",
-    title: "CÓMO COMPRAR",
-    description:
-      "Conocé cómo realizar tu pedido mayorista de forma simple y rápida.",
-    href: "/como-comprar",
-    arrow: true,
-  },
-  {
-    id: "about",
-    className: "info-card about-card",
-    icon: "arrow",
-    title: "Quiénes somos",
-    description:
-      "Somos SAEL. Trabajamos para ofrecer indumentaria pensada para emprendedores y comercios que buscan variedad, diseño y calidad.",
-  },
 ];
 
 export default function LandingPage() {
@@ -76,7 +90,7 @@ export default function LandingPage() {
           <span>SAEL</span> MAYORISTA
         </div>
 
-        <h1>Indumentaria para tu emprendimiento</h1>
+        <h1>Indumentaria para tu negocio</h1>
 
         <p>
           Modelos, talles y diseños pensados para hacer crecer tu negocio.
@@ -118,15 +132,13 @@ export default function LandingPage() {
           const content = (
             <>
               <div
-                className={`card-icon ${
-                  card.id === "about" ? "subtle-icon" : ""
-                }`}
+                className="card-icon"
               >
                 <AppIcon name={card.icon} />
               </div>
 
               {card.arrow && (
-                <div className="subtle-icon">
+                <div className="subtle-icon card-arrow">
                   <AppIcon name="arrow" />
                 </div>
               )}
@@ -193,21 +205,16 @@ export default function LandingPage() {
         </div>
 
         <nav className="social-links" aria-label="Redes sociales">
-          <a href="#instagram" aria-label="Instagram">
+          <a href={SITE_CONFIG.socials.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram SAEL Tendencia">
             <AppIcon name="instagram" />
           </a>
 
-          <a href="#tiktok" aria-label="TikTok">
+          <a href={SITE_CONFIG.socials.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok SAEL Tendencia">
             <AppIcon name="tiktok" />
           </a>
 
-          <a
-            href={WHATSAPP_LINK}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="WhatsApp"
-          >
-            <AppIcon name="whatsapp" />
+          <a href={SITE_CONFIG.socials.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook SAEL Tendencia">
+            <AppIcon name="facebook" />
           </a>
         </nav>
 
