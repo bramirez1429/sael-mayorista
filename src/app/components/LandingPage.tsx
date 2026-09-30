@@ -1,4 +1,5 @@
 import { SITE_CONFIG } from "../../config/site";
+import Link from "next/link";
 import { AppIcon, type AppIconName } from "./AppIcon";
 
 const WHATSAPP_LINK = `https://wa.me/${SITE_CONFIG.whatsappNumber}`;
@@ -99,7 +100,7 @@ export default function LandingPage() {
 
       <section className="cards-grid" aria-label="Información mayorista">
         {/* CATÁLOGO: queda separado y exactamente con el mismo diseño */}
-        <a
+        <Link
           className="catalog-card card-link"
           href="/catalogo"
           id="catalogo"
@@ -126,7 +127,7 @@ export default function LandingPage() {
           <span className="catalog-cta">
             Ver catálogo <AppIcon name="arrow" />
           </span>
-        </a>
+        </Link>
 
         {landingCards.map((card) => {
           const content = (
@@ -170,14 +171,14 @@ export default function LandingPage() {
 
           if (card.href) {
             return (
-              <a
+              <Link
                 key={card.id}
                 id={card.id}
                 className={card.className}
                 href={card.href}
               >
                 {content}
-              </a>
+              </Link>
             );
           }
 

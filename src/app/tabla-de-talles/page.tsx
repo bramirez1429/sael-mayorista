@@ -1,6 +1,7 @@
 import { AppIcon } from "../components/AppIcon";
 import WhatsAppCta from "../../components/WhatsAppCta";
 import SizeChartGallery, { type SizeChart } from "../../components/SizeChartGallery";
+import Link from "next/link";
 import currentSizeChart from "../../images/talles/TABLA DE TALLES 2026 - 2027.png";
 import classicSizeChart from "../../images/talles/Tabla de talles.png";
 
@@ -11,7 +12,7 @@ const sizeCharts: SizeChart[] = [
 
 export default function TablaDeTallesPage() {
   return <main className="sizes-page"><div className="sizes-page-shell">
-    <a className="back-link" href="/"><AppIcon name="arrow-left" /> Volver al inicio</a>
+    <Link className="back-link" href="/"><AppIcon name="arrow-left" /> Volver al inicio</Link>
     <header className="sizes-page-hero"><div className="eyebrow"><span>SAEL</span> MAYORISTA</div><h1>TABLA DE TALLES</h1><p>Consultá las medidas de cada prenda antes de realizar tu pedido.</p></header>
     <section className="size-charts" aria-label="Tablas de talles"><SizeChartGallery charts={sizeCharts} /></section>
     <WhatsAppCta />

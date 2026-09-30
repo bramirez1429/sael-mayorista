@@ -1,6 +1,7 @@
 import { SITE_CONFIG } from "../../config/site";
 import WhatsAppCta from "../../components/WhatsAppCta";
 import { AppIcon } from "./AppIcon";
+import Link from "next/link";
 
 const formattedMinimum = new Intl.NumberFormat("es-AR", {
   style: "currency",
@@ -12,9 +13,9 @@ export default function MinimumPurchasePage() {
   return (
     <main className="minimum-page">
       <div className="minimum-page-shell">
-        <a className="back-link" href="/">
+        <Link className="back-link" href="/">
           <AppIcon name="arrow-left" /> Volver al inicio
-        </a>
+        </Link>
         <header className="minimum-hero">
             <div className="eyebrow">
             <span>SAEL</span> MAYORISTA

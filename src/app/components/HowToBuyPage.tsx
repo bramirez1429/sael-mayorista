@@ -1,6 +1,7 @@
 import { SITE_CONFIG } from "../../config/site";
 import { AppIcon, type AppIconName } from "./AppIcon";
 import WhatsAppCta from "../../components/WhatsAppCta";
+import Link from "next/link";
 
 const formattedMinimum = new Intl.NumberFormat("es-AR", {
   style: "currency",
@@ -57,9 +58,9 @@ export default function HowToBuyPage() {
   return (
     <main className="how-to-buy-page">
       <div className="how-to-buy-shell">
-        <a className="back-link" href="/">
+        <Link className="back-link" href="/">
           <AppIcon name="arrow-left" /> Volver al inicio
-        </a>
+        </Link>
         <header className="how-to-buy-hero">
           <div className="eyebrow">
             <span>SAEL</span> MAYORISTA

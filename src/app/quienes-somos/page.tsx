@@ -1,9 +1,10 @@
 import WhatsAppCta from "../../components/WhatsAppCta";
 import { AppIcon } from "../components/AppIcon";
+import Link from "next/link";
 
 export default function QuienesSomosPage() {
   return <main className="about-page"><div className="about-page-shell">
-    <a className="back-link" href="/"><AppIcon name="arrow-left" /> Volver al inicio</a>
+    <Link className="back-link" href="/"><AppIcon name="arrow-left" /> Volver al inicio</Link>
     <header className="about-page-hero"><div className="eyebrow"><span>SAEL</span> MAYORISTA</div><h1>QUIÉNES SOMOS</h1></header>
     <article className="about-copy">
       <div className="about-copy-icon"><AppIcon name="team" /></div>
