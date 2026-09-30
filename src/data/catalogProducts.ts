@@ -4,5 +4,3 @@ export type CatalogProduct = {
   title: string;
   description: string;
 };
-
-export const catalogProducts: CatalogProduct[] = [];
