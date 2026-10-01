@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/sael-og.png",
+        url: "/logo.png",
         width: 1200,
         height: 630,
         alt: SITE_CONFIG.siteName,
