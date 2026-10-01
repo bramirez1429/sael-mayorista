@@ -17,7 +17,7 @@ async function getCatalogProducts(): Promise<CatalogProduct[]> {
     id: file,
     image: `/images/catalogo/${encodeURIComponent(file)}`,
     title: titleFromFilename(file),
-    description: "Colección mayorista SAEL",
+      description: "",
   }));
 }
 
@@ -29,3 +29,4 @@ export default async function CatalogoPage() {
     <section aria-label="Productos del catálogo"><CatalogGallery products={products} /></section>
   </div></main>;
 }
+  
