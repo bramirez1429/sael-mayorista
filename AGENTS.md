@@ -33,7 +33,8 @@ Debe ser:
 - No instalar dependencias innecesarias.
 - No hacer refactors innecesarios.
 - Mantener pocos archivos y componentes simples.
-
+- Mantener code clean y solid
+- Archivos como maximo de  200lineas
 ## Reglas obligatorias para Codex
 
 - No ejecutar build.
