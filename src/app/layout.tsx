@@ -40,6 +40,11 @@ export const metadata: Metadata = {
     description: siteDescription,
     images: ["/sael-og.png"],
   },
+  icons: {
+    icon: "/sael-og.png",
+    shortcut: "/sael-og.png",
+    apple: "/sael-og.png",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

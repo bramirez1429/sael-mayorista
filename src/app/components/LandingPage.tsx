@@ -113,7 +113,7 @@ export default function LandingPage() {
 
           <div className="catalog-content">
             <Image
-              src="/logo.png"
+              src="/sael-og.png"
               alt="SAEL"
               width={100}
               height={100}
