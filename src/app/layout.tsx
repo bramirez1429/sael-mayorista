@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: SITE_CONFIG.siteName,
     description: siteDescription,
-    url: SITE_CONFIG.siteUrl,
+    // url: SITE_CONFIG.siteUrl,
     siteName: SITE_CONFIG.siteName,
     locale: "es_AR",
     type: "website",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_CONFIG.siteName,
     description: siteDescription,
-    images: ["/sael-og.png"],
+    images: ["/logo.png"],
   },
 };
 
