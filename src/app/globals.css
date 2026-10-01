@@ -63,3 +63,6 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 900px) { .buy-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .buy-steps { grid-template-columns: 1fr; }.buy-step-content { padding-left: 0; } }
 .buy-step-copy { padding-right: 32px; }
+ .product-colors { display: flex; align-items: center; gap: 8px; margin-top: 10px; color: var(--muted); font-size: 13px; }
+ .product-color-list { display: flex; align-items: center; gap: 6px; }
+ .product-color { display: inline-block; width: 19px; height: 19px; border: 1px solid #dedede; border-radius: 50%; }

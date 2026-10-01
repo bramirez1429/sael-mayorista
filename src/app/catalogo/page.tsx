@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import Link from "next/link";
 import CatalogGallery from "../../components/CatalogGallery";
-import type { CatalogProduct } from "../../data/catalogProducts";
+import { catalogProductColors, type CatalogProduct } from "../../data/catalogProducts";
 
 const IMAGE_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
 
@@ -17,7 +17,8 @@ async function getCatalogProducts(): Promise<CatalogProduct[]> {
     id: file,
     image: `/images/catalogo/${encodeURIComponent(file)}`,
     title: titleFromFilename(file),
-      description: "",
+    description: "",
+    colors: catalogProductColors,
   }));
 }
 
