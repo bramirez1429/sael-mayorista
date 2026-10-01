@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_CONFIG.siteName,
     description: siteDescription,
-    images: ["/logo.png"],
+    images: ["/sael-og.png"],
   },
 };
 
