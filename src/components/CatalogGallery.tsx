@@ -1,9 +1,13 @@
+
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Drawer, Image, Modal } from "antd";
+import { Button, Divider, Drawer, Image, Modal } from "antd";
 import type { CatalogProduct, ProductColor } from "../data/catalogProducts";
-import { catalogKidsSizes } from "../data/catalogProducts";
+import {
+  catalogKidsSizes,
+  catalogProductColors,
+} from "../data/catalogProducts";
 import { SITE_CONFIG } from "../config/site";
 import {
   buildWhatsAppMessage,
@@ -14,9 +18,12 @@ import {
   type SelectedProduct,
   type SelectedVariant,
 } from "../lib/order";
+import { link } from "fs";
 
 const STORAGE_KEY = "sael-selected-products";
 type Mode = "curve" | "unit";
+type AssortedMode = "quantity" | "curve";
+type AssortedColorSelection = ProductColor & { amount: number };
 
 function createEmptyProduct(product: CatalogProduct): SelectedProduct {
   return {
@@ -82,30 +89,27 @@ function SizeControls({
             <span>Talle {size}</span>
             {selected ? (
               <div className="quantity-control">
-                <button
-                  type="button"
+                <Button type="default"
                   onClick={() => changeSize(size, selected.quantity - 1)}
                   aria-label={`Disminuir talle ${size}`}
                 >
                   -
-                </button>
+                </Button>
                 <span>{selected.quantity}</span>
-                <button
-                  type="button"
+                <Button type="default"
                   onClick={() => changeSize(size, selected.quantity + 1)}
                   aria-label={`Aumentar talle ${size}`}
                 >
                   +
-                </button>
+                </Button>
               </div>
             ) : (
-              <button
+              <Button type="default"
                 className="size-add-button"
-                type="button"
                 onClick={() => changeSize(size, 1)}
               >
                 Agregar
-              </button>
+              </Button>
             )}
           </div>
         );
@@ -119,7 +123,6 @@ export default function CatalogGallery({
 }: {
   products: CatalogProduct[];
 }) {
-  const [selectionMode, setSelectionMode] = useState(false);
   const [selected, setSelected] = useState<SelectedProduct[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [orderOpen, setOrderOpen] = useState(false);
@@ -127,6 +130,12 @@ export default function CatalogGallery({
   const [draft, setDraft] = useState<SelectedProduct | null>(null);
   const [mode, setMode] = useState<Mode>("unit");
   const [error, setError] = useState("");
+  const [assortedOpen, setAssortedOpen] = useState(false);
+  const [assortedMode, setAssortedMode] = useState<AssortedMode>("quantity");
+  const [assortedColors, setAssortedColors] = useState<
+    AssortedColorSelection[]
+  >([]);
+  const [assortedError, setAssortedError] = useState("");
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
@@ -234,15 +243,71 @@ export default function CatalogGallery({
     closeProduct();
   };
   const sendOrder = () => {
+    if (selected.length === 0) return;
     const message = buildWhatsAppMessage(generateOrderTicket(), selected);
     window.open(
       `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`,
       "_blank",
       "noopener,noreferrer",
     );
+    setSelected([]);
+    window.localStorage.removeItem(STORAGE_KEY);
+    setOrderOpen(false);
   };
   const clearOrder = () => {
-    if (window.confirm("Queres vaciar el pedido?")) setSelected([]);
+    if (window.confirm("Queres vaciar el pedido?")) {
+      setSelected([]);
+      window.localStorage.removeItem(STORAGE_KEY);
+      setOrderOpen(false);
+    }
+  };
+  const openAssorted = () => {
+    setAssortedColors(
+      catalogProductColors.map((color) => ({ ...color, amount: 0 })),
+    );
+    setAssortedMode("quantity");
+    setAssortedError("");
+    setAssortedOpen(true);
+  };
+  const updateAssortedColor = (name: string, amount: number) =>
+    setAssortedColors((colors) =>
+      colors.map((color) =>
+        color.name === name ? { ...color, amount: Math.max(0, amount) } : color,
+      ),
+    );
+  const assortedTotal = assortedColors.reduce(
+    (sum, color) => sum + color.amount * (assortedMode === "curve" ? 5 : 1),
+    0,
+  );
+  const sendAssortedOrder = () => {
+    const active = assortedColors.filter((color) => color.amount > 0);
+    if (!active.length) {
+      setAssortedError("Selecciona al menos una cantidad.");
+      return;
+    }
+    const lines = active.map((color) =>
+      assortedMode === "curve"
+        ? `${color.name}: ${color.amount} ${color.amount === 1 ? "curva" : "curvas"}`
+        : `${color.name}: ${color.amount} u.`,
+    );
+    const message = [
+      "PEDIDO SAEL - SURTIDO",
+      `Ticket: ${generateOrderTicket()}`,
+      "",
+      "Surtido de modelos mas vendidos",
+      "",
+      ...lines,
+      "",
+      `Total: ${assortedTotal} u.`,
+      "",
+      "Quiero confirmar disponibilidad.",
+    ].join("\n");
+    window.open(
+      `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
+    setAssortedOpen(false);
   };
 
   return (
@@ -251,11 +316,14 @@ export default function CatalogGallery({
         <button
           className="catalog-selection-toggle"
           type="button"
-          onClick={() => setSelectionMode((value) => !value)}
+          onClick={openAssorted}
         >
-          {selectionMode ? "Cancelar seleccion" : "Seleccionar productos"}
+          Arma tu pedido surtido
         </button>
       </div>
+      <Divider titlePlacement="center" plain>
+        Arma tu pedido a eleccion
+      </Divider>
       <Image.PreviewGroup>
         <div className="catalog-grid">
           {products.map((product) => {
@@ -287,15 +355,12 @@ export default function CatalogGallery({
                     ))}
                   </div>
                 </div>
-                {selectionMode && (
-                  <button
-                    className="product-select-button"
-                    type="button"
-                    onClick={() => openProduct(product)}
-                  >
-                    {exists ? "Editar seleccion" : "Seleccionar"}
-                  </button>
-                )}
+                <Button type="default"
+                  className="product-select-button"
+                  onClick={() => openProduct(product)}
+                >
+                  {exists ? "Editar seleccion" : "Seleccionar"}
+                </Button>
               </article>
             );
           })}
@@ -306,9 +371,7 @@ export default function CatalogGallery({
           <span>
             {selected.length} productos seleccionados - {totalUnits} unidades
           </span>
-          <button type="button" onClick={() => setOrderOpen(true)}>
-            Ver pedido
-          </button>
+          <Button type="default" onClick={() => setOrderOpen(true)}>Ver pedido</Button>
         </div>
       )}
       <Modal
@@ -330,20 +393,18 @@ export default function CatalogGallery({
               <div className="modal-mode-selector">
                 <strong>Como queres agregar este producto?</strong>
                 <div>
-                  <button
+                  <Button type="default"
                     className={mode === "curve" ? "active" : ""}
-                    type="button"
                     onClick={() => changeMode("curve")}
                   >
                     Por curva
-                  </button>
-                  <button
+                  </Button>
+                  <Button type="default"
                     className={mode === "unit" ? "active" : ""}
-                    type="button"
                     onClick={() => changeMode("unit")}
                   >
                     Por unidad
-                  </button>
+                  </Button>
                 </div>
               </div>
               <div className="modal-section">
@@ -354,17 +415,16 @@ export default function CatalogGallery({
                       (variant) => variant.colorName === color.name,
                     );
                     return (
-                      <button
+                      <Button type="default" 
+                      style={{padding:'0px 20px 0px 10px'}}
                         className={`modal-color${active ? " modal-color-active" : ""}`}
-                        type="button"
-                        key={color.name}
                         onClick={() => toggleColor(color)}
                       >
-                        <span style={{ backgroundColor: color.hex }}>
-                          {active ? "✓" : ""}
+                        <span style={{ backgroundColor: color.hex, border:'solid 1px #e4e4e4'}}>
+                          {active ? "X" : ""}
                         </span>
                         {color.name}
-                      </button>
+                      </Button>
                     );
                   })}
                 </div>
@@ -382,8 +442,7 @@ export default function CatalogGallery({
                           {variant.colorName}
                         </span>
                         <div className="curve-control">
-                          <button
-                            type="button"
+                          <Button type="default"
                             onClick={() =>
                               updateVariant(
                                 setCurveForColor(variant, count - 1),
@@ -391,10 +450,9 @@ export default function CatalogGallery({
                             }
                           >
                             -
-                          </button>
+                          </Button>
                           <span>{count}</span>
-                          <button
-                            type="button"
+                          <Button type="default"
                             onClick={() =>
                               updateVariant(
                                 setCurveForColor(variant, count + 1),
@@ -402,7 +460,7 @@ export default function CatalogGallery({
                             }
                           >
                             +
-                          </button>
+                          </Button>
                         </div>
                         <span className="curve-units">{count * 5} u.</span>
                       </div>
@@ -429,17 +487,78 @@ export default function CatalogGallery({
                 </div>
               )}
               {error && <p className="modal-validation">{error}</p>}
-              <button
-                className="modal-confirm-button"
-                type="button"
-                onClick={saveProduct}
-              >
+              <Button type="default" className="modal-confirm-button" onClick={saveProduct}>
                 {selected.some((product) => product.id === draft.id)
                   ? "Actualizar pedido"
                   : "Agregar al pedido"}
-              </button>
+              </Button>
             </>
           )}
+        </div>
+      </Modal>
+      <Modal
+        open={assortedOpen}
+        onCancel={() => setAssortedOpen(false)}
+        footer={null}
+        title="Opcion mas rapida"
+        width={440}
+      >
+        <div className="assorted-modal-content">
+          <p>
+            Elegi cantidades y colores. Nosotros armamos el surtido con los
+            modelos mas vendidos.
+          </p>
+          <div className="modal-mode-selector">
+            <div>
+              <Button type="default"
+                className={assortedMode === "quantity" ? "active" : ""}
+                onClick={() => setAssortedMode("quantity")}
+              >
+                Por cantidad
+              </Button>
+              <Button type="default"
+                className={assortedMode === "curve" ? "active" : ""}
+                onClick={() => setAssortedMode("curve")}
+              >
+                Por curva
+              </Button>
+            </div>
+          </div>
+          <div className="assorted-color-list">
+            {assortedColors.map((color) => (
+              <div className="assorted-color-row" key={color.name}>
+                <span className="curve-color-name">
+                  <i style={{ backgroundColor: color.hex }} />
+                  {color.name}
+                </span>
+                <div className="quantity-control">
+                  <Button type="default"
+                    onClick={() =>
+                      updateAssortedColor(color.name, color.amount - 1)
+                    }
+                  >
+                    -
+                  </Button>
+                  <span>{color.amount}</span>
+                  <Button type="default"
+                    onClick={() =>
+                      updateAssortedColor(color.name, color.amount + 1)
+                    }
+                  >
+                    +
+                  </Button>
+                </div>
+                {assortedMode === "curve" && (
+                  <small>{color.amount * 5} u.</small>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="modal-total">Total: {assortedTotal} unidades</div>
+          {assortedError && <p className="modal-validation">{assortedError}</p>}
+          <Button type="default" className="modal-confirm-button" onClick={sendAssortedOrder}>
+            Enviar pedido surtido por WhatsApp
+          </Button>
         </div>
       </Modal>
       <Drawer
@@ -474,20 +593,22 @@ export default function CatalogGallery({
           <span>Productos seleccionados: {selected.length}</span>
           <span>Total de unidades: {totalUnits}</span>
         </div>
-        <button
+        <Button
+          type="primary"
+          block
           className="order-whatsapp-button"
-          type="button"
           onClick={sendOrder}
         >
           Enviar pedido por WhatsApp
-        </button>
-        <button
+        </Button>
+        <Button type="link"
+          block
           className="order-clear-button"
-          type="button"
           onClick={clearOrder}
+          danger
         >
           Vaciar pedido
-        </button>
+        </Button>
       </Drawer>
     </>
   );

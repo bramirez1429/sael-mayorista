@@ -1,6 +1,6 @@
 :root { --sael-red: #e30613; --sael-black: #111111; --sael-white: #ffffff; --sael-background: #f7f7f7; --black: var(--sael-black); --white: var(--sael-white); --canvas: var(--sael-background); --muted: #6b6b6b; --red: var(--sael-red); }
 .app-icon { color: var(--sael-red); }
-.sizes-card .app-icon { font-size: 24px; }
+.sizes-card .app-icon { font-size: 40px; }
 .buy-step-icon .app-icon { color: var(--sael-red); }
 .whatsapp-button .app-icon { color: inherit; }
 * { box-sizing: border-box; }
@@ -28,6 +28,10 @@ a { color: inherit; text-decoration: none; }
 .catalog-content h2 { font-size: clamp(45px, 10vw, 100px); line-height: .87; letter-spacing: -.075em; margin: 20px 0 ; color: var(--white); }
 .catalog-content h2 span { color: var(--red); }
 .catalog-logo { display: block; width: 100px; height: auto; object-fit: contain; margin-bottom: 10px; transform: translateY(-4px); }
+/* =========================================================
+   CATALOGO - LAYOUT Y PRODUCT CARD
+   Contenedor, grilla y estructura visual de las cards.
+   ========================================================= */
 .catalog-page { min-height: 100vh; background: var(--canvas); }.catalog-page-shell { max-width: 1120px; margin: 0 auto; padding: 28px 20px 72px; }.catalog-page-hero { padding: 72px 0 42px; }.catalog-page-hero h1 { font-size: clamp(42px, 9vw, 84px); line-height: .95; letter-spacing: -.07em; margin: 0 0 22px; }.catalog-page-hero p { color: var(--muted); font-size: 17px; margin: 0; }.catalog-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }.product-card { min-width: 0; background: var(--white); border: 1px solid #e8e8e8; border-radius: 20px; padding: 12px; box-shadow: 0 8px 28px rgba(17,17,17,.035); }.product-image-wrapper { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 14px; background: var(--canvas); }.product-image-wrapper img { object-fit: cover; }.product-card h2 { font-size: 16px; line-height: 1.2; margin: 14px 0 6px; }.product-card p { display: -webkit-box; overflow: hidden; color: var(--muted); font-size: 13px; line-height: 1.4; margin: 0; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 @media (min-width: 900px) { .catalog-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; } }
 @media (max-width: 640px) { .catalog-page-shell { padding: 22px 16px 52px; }.catalog-page-hero { padding: 40px 0 36px; }.catalog-page-hero h1 { font-size: 48px; }.catalog-page-hero p { font-size: 15px; } }
@@ -63,6 +67,10 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 900px) { .buy-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .buy-steps { grid-template-columns: 1fr; }.buy-step-content { padding-left: 0; } }
 .buy-step-copy { padding-right: 32px; }
+/* =========================================================
+   CATALOGO - BOTONES Y CONTROLES
+   Seleccion, colores, contadores, pedido surtido y acciones del pedido.
+   ========================================================= */
  .product-colors { display: flex; align-items: center; gap: 8px; margin-top: 10px; color: var(--muted); font-size: 13px; }
  .product-color-list { display: flex; align-items: center; gap: 6px; }
 .product-color { display: inline-block; width: 19px; height: 19px; border: 1px solid #dedede; border-radius: 50%; }
@@ -72,12 +80,52 @@ a { color: inherit; text-decoration: none; }
 .selected-color-options { margin-top: 12px; padding-top: 10px; border-top: 1px solid #ededed; }.selected-color-options strong { display: block; margin-bottom: 7px; font-size: 13px; }
 .variant-size-list { display: grid; gap: 5px; }.variant-size-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 12px; }.size-add-button { border: 1px solid #dedede; border-radius: 7px; padding: 5px 8px; background: var(--white); color: var(--black); cursor: pointer; font-size: 11px; }.quantity-control button { cursor: pointer; }
 .order-variant { display: grid; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px solid #ededed; }.order-size-row { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; }.order-size-row button { border: 0; background: none; color: var(--red); cursor: pointer; font-size: 11px; }
+/* =========================================================
+   BTN - CATALOGO
+   Boton Seleccionar/Editar seleccion de cada card.
+   ========================================================= */
 .product-select-button { width: 100%; margin-top: 14px; min-height: 38px; border: 1px solid #dedede; border-radius: 9px; background: var(--white); color: var(--black); cursor: pointer; font: inherit; font-size: 13px; }.product-card-selected .product-select-button { border-color: var(--red); color: var(--red); }
-.product-modal-content { display: grid; gap: 18px; }.product-modal-image { width: 100%; max-height: 260px; object-fit: contain; border-radius: 12px; background: var(--canvas); }.modal-section { display: grid; gap: 10px; }.modal-section > strong { font-size: 14px; }.modal-colors { display: flex; flex-wrap: wrap; gap: 8px; }.modal-color { display: inline-flex; align-items: center; gap: 7px; padding: 6px 9px; border: 1px solid #e1e1e1; border-radius: 9px; background: var(--white); color: var(--black); cursor: pointer; font: inherit; font-size: 12px; }.modal-color > span { display: inline-grid; place-items: center; width: 20px; height: 20px; border: 1px solid #d8d8d8; border-radius: 50%; font-size: 11px; }.modal-color-active { border-color: var(--red); }.modal-variant { padding-top: 14px; border-top: 1px solid #ededed; }.modal-total { color: var(--muted); font-size: 14px; }.modal-validation { margin: 0; color: var(--red); font-size: 13px; }.modal-confirm-button { min-height: 46px; border: 0; border-radius: 10px; background: var(--red); color: var(--white); cursor: pointer; font: inherit; font-weight: 600; }
+/* =========================================================
+   MODAL - PRODUCTO
+   Configuracion visual del producto y sus opciones.
+   ========================================================= */
+/* =========================================================
+   BTN - COLORES
+   Chips de color y estado seleccionado dentro del modal.
+   ========================================================= */
+.product-modal-content { display: grid; gap: 18px; }.product-modal-image { width: 100%; max-height: 260px; object-fit: contain; border-radius: 12px; background: var(--canvas); }.modal-section { display: grid; gap: 10px; }.modal-section > strong { font-size: 14px; }.modal-colors { display: flex; flex-wrap: wrap; gap: 8px; }.modal-color { display: inline-flex; align-items: center; gap: 7px; padding: 6px 9px; border: 1px solid #e1e1e1; border-radius: 9px; background: var(--white); color: var(--black); cursor: pointer; font: inherit; font-size: 12px; }.modal-color > span { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; font-size: 11px; }.modal-color-active { border-color: var(--red); }.modal-variant { padding-top: 14px; border-top: 1px solid #ededed; }.modal-total { color: var(--muted); font-size: 14px; }.modal-validation { margin: 0; color: var(--red); font-size: 13px; }.modal-confirm-button { min-height: 46px; border: 0; border-radius: 10px; background: var(--red); color: var(--white); cursor: pointer; font: inherit; font-weight: 600; }
+/* =========================================================
+   BTN - CONTADORES
+   Controles de curvas y cantidades dentro del modal.
+   ========================================================= */
 .curve-panel { display: grid; gap: 10px; padding: 14px 0; border-top: 1px solid #ededed; border-bottom: 1px solid #ededed; }.curve-control { display: flex; align-items: center; gap: 12px; }.curve-control button:not(.size-add-button) { width: 30px; height: 30px; border: 1px solid #dedede; border-radius: 7px; background: var(--white); cursor: pointer; }.curve-panel small { color: var(--muted); }.manual-toggle { justify-self: start; border: 0; padding: 0; background: none; color: var(--red); cursor: pointer; font: inherit; font-size: 13px; }
+/* =========================================================
+   BTN - MODAL MODO DE COMPRA
+   Botones Por curva y Por unidad.
+   ========================================================= */
 .modal-mode-selector { display: grid; gap: 10px; }.modal-mode-selector > div { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }.modal-mode-selector button { min-height: 40px; border: 1px solid #dedede; border-radius: 9px; background: var(--white); color: var(--black); cursor: pointer; font: inherit; }.modal-mode-selector button.active { border-color: var(--red); background: rgba(227,6,19,.06); color: var(--red); font-weight: 600; }.modal-unit-sections { display: grid; gap: 12px; }
 .curve-color-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 12px; padding: 8px 0; }.curve-color-name { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; }.curve-color-name i { width: 16px; height: 16px; border: 1px solid #d8d8d8; border-radius: 50%; }.curve-units { color: var(--muted); font-size: 12px; white-space: nowrap; }
+/* =========================================================
+   PEDIDO SURTIDO - MODAL
+   Estilos exclusivos del pedido rapido.
+   ========================================================= */
+.assorted-modal-content { display: grid; gap: 18px; }.assorted-modal-content p { margin: 0; color: var(--muted); line-height: 1.5; }.assorted-color-list { display: grid; gap: 10px; }.assorted-color-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 12px; }.assorted-color-row small { color: var(--muted); min-width: 42px; text-align: right; }
+/* =========================================================
+   ANT DESIGN - OVERRIDES
+   Ajustes visuales sobre Button, Modal y Drawer de Ant Design.
+   ========================================================= */
+.catalog-page .ant-btn, .product-config-modal .ant-btn, .order-drawer .ant-btn { border-radius: 8px; }
+.catalog-page .ant-btn:not(.ant-btn-link), .product-config-modal .ant-btn:not(.ant-btn-link), .order-drawer .ant-btn:not(.ant-btn-link) { border-width: 1px; }
+.catalog-page .quantity-control .ant-btn, .product-config-modal .quantity-control .ant-btn { min-width: 32px; padding-inline: 8px; }
+.catalog-page .modal-color { border-radius: 8px; }
+.catalog-page .selected-products-bar .ant-btn-link { border-radius: 0; }
+.order-whatsapp-button { border-radius: 6px; }.order-clear-button { border-radius: 1s0px; }
+.order-clear-button { margin-top: 10px; }
 @media (max-width: 640px) { .product-config-modal { max-width: calc(100vw - 24px); margin: 12px auto; }.product-config-modal .ant-modal-content { max-height: calc(100vh - 24px); overflow-y: auto; }.product-modal-image { max-height: 210px; } }
+/* =========================================================
+   BTN - PEDIDO SURTIDO
+   Boton superior que abre el pedido rapido.
+   ========================================================= */
 .catalog-selection-toolbar { display: flex; justify-content: flex-end; margin: 0 0 16px; }
 .catalog-selection-toggle, .product-add-button, .selected-products-bar button, .order-whatsapp-button, .order-clear-button { border: 0; cursor: pointer; font: inherit; }
 .catalog-selection-toggle { padding: 10px 14px; border: 1px solid #dedede; border-radius: 10px; background: var(--white); color: var(--black); font-size: 13px; transition: border-color .2s ease, color .2s ease; }
@@ -92,10 +140,22 @@ a { color: inherit; text-decoration: none; }
 .quantity-control, .order-item-actions { display: flex; align-items: center; gap: 10px; }
 .quantity-control { justify-content: center; }
 .quantity-control button, .order-item-actions button { width: 28px; height: 28px; border: 1px solid #dedede; border-radius: 7px; background: var(--white); cursor: pointer; }
+/* =========================================================
+   BTN - VER PEDIDO
+   Barra inferior y accion para abrir el resumen.
+   ========================================================= */
 .selected-products-bar { position: fixed; z-index: 10; right: 20px; bottom: 20px; left: 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; max-width: 720px; margin: 0 auto; padding: 14px 18px; border-radius: 14px; background: var(--black); color: var(--white); box-shadow: 0 10px 30px rgba(17,17,17,.18); }
 .selected-products-bar button { padding: 0; background: none; color: var(--red); font-weight: 700; }
+/* =========================================================
+   DRAWER - PEDIDO
+   Productos, acciones y resumen del pedido.
+   ========================================================= */
 .order-item { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px solid #ededed; }
 .order-item img { width: 64px; height: 80px; border-radius: 8px; object-fit: cover; }
 .order-item > div { display: grid; gap: 4px; min-width: 0; }.order-item strong { font-size: 14px; }.order-item span { color: var(--muted); font-size: 12px; }.order-item-actions { margin-top: 4px; }.order-item-actions button:last-child { width: auto; padding: 0 8px; color: var(--red); border-color: transparent; }
-.order-summary { display: grid; gap: 5px; margin: 20px 0; color: var(--muted); font-size: 13px; }.order-whatsapp-button { width: 100%; min-height: 46px; border-radius: 10px; background: var(--red); color: var(--white); font-weight: 600; }.order-clear-button { display: block; margin: 14px auto 0; background: none; color: var(--muted); font-size: 13px; text-decoration: underline; }
+.order-summary { display: grid; gap: 5px; margin: 20px 0; color: var(--muted); font-size: 13px; }.order-whatsapp-button { width: 100%; min-height: 46px; border: 1px solid var(--red); border-radius: 8px; background: var(--red); border-color: var(--red); color: #fff; font-weight: 600; }.order-whatsapp-button.ant-btn { background: var(--red); border-color: var(--red); color: #fff; border-radius: 8px; }.order-whatsapp-button.ant-btn:hover, .order-whatsapp-button.ant-btn:focus, .order-whatsapp-button.ant-btn:active { background: var(--red); border-color: var(--red); color: #fff; }.order-clear-button { display: block; margin: 14px auto 0; background: none; color: var(--muted); font-size: 13px; text-decoration: underline; }
+/* =========================================================
+   RESPONSIVE - MOBILE
+   Ajustes del catalogo y pedido para pantallas pequenas.
+   ========================================================= */
 @media (max-width: 640px) { .selected-products-bar { right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); left: 12px; padding-bottom: calc(14px + env(safe-area-inset-bottom)); }.catalog-selection-toolbar { justify-content: stretch; }.catalog-selection-toggle { width: 100%; } }
