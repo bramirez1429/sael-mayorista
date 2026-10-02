@@ -41,6 +41,10 @@ export default function MinimumPurchasePage() {
               El monto mínimo corresponde al total de productos, sin incluir el
               costo del envío.
             </p>
+            <p>
+              La compra mínima es de 2 curvas de una misma línea: 2 curvas de
+              Adulto o 2 curvas de Niña. No se combinan entre sí.
+            </p>
           </div>
         </section>
         <section className="minimum-benefits">

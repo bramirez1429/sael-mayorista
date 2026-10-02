@@ -1,6 +1,6 @@
 :root { --sael-red: #e30613; --sael-black: #111111; --sael-white: #ffffff; --sael-background: #f7f7f7; --black: var(--sael-black); --white: var(--sael-white); --canvas: var(--sael-background); --muted: #6b6b6b; --red: var(--sael-red); }
 .app-icon { color: var(--sael-red); }
-.sizes-card .app-icon { font-size: 40px; }
+.sizes-card .app-icon { font-size: 40px; }.sizes-card .card-arrow .app-icon { font-size: 24px; }
 .buy-step-icon .app-icon { color: var(--sael-red); }
 .whatsapp-button .app-icon { color: inherit; }
 * { box-sizing: border-box; }

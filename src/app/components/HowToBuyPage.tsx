@@ -18,39 +18,32 @@ const steps: {
   {
     number: "01",
     icon: "shopping",
-    title: "ELEGÍ TUS PRODUCTOS",
-    text: "RECORRÉ NUESTRO CATÁLOGO Y ELEGÍ LOS MODELOS, TALLES Y COLORES QUE QUIERAS PARA TU NEGOCIO.",
+    title: "ARMÁ TU PEDIDO",
+    text: "Recorré nuestro catálogo y elegí cómo comprar: producto por producto o con nuestro Pedido Surtido, una opción más rápida con modelos seleccionados.",
   },
   {
     number: "02",
     icon: "check-circle",
-    title: "VERIFICÁ LA COMPRA MÍNIMA",
-    text: (
-      <>
-        Recordá que la compra mínima es de <strong>{formattedMinimum}</strong>{" "}
-        en productos.
-        <br />
-        Podés combinar distintos modelos, talles y colores.
-      </>
-    ),
+    title: "ELEGÍ COLORES Y CANTIDADES",
+    text: "Podés pedir por curva o por unidad. Seleccioná los colores, talles y cantidades que necesitás para tu negocio.",
   },
   {
     number: "03",
     icon: "whatsapp",
-    title: "CONFIRMÁ TU PEDIDO",
-    text: "Enviános tu selección por WhatsApp y verificamos disponibilidad antes de avanzar.",
+    title: "REVISÁ Y ENVIÁ TU PEDIDO",
+    text: "Antes de enviarlo, revisá el resumen con todos los productos y unidades seleccionadas. Luego mandanos el pedido directamente por WhatsApp.",
   },
   {
     number: "04",
     icon: "credit-card",
-    title: "ELEGÍ EL MEDIO DE PAGO",
-    text: "Te informamos las opciones de pago disponibles para completar tu compra.",
+    title: "CONFIRMAMOS DISPONIBILIDAD Y PAGO",
+    text: "Revisamos tu pedido, confirmamos disponibilidad y te informamos los medios de pago disponibles para finalizar la compra.",
   },
   {
     number: "05",
     icon: "truck",
     title: "PREPARAMOS Y ENVIAMOS TU PEDIDO",
-    text: "Una vez confirmado el pago, preparamos tu pedido y coordinamos el envío a todo el país.",
+    text: "Una vez confirmado el pago, preparamos tu compra y coordinamos el envío para que recibas tu pedido de SAEL.",
   },
 ];
 
@@ -65,7 +58,7 @@ export default function HowToBuyPage() {
           <div className="eyebrow">
             <span>SAEL</span> MAYORISTA
           </div>
-          <h1>¿CÓMO COMPRAR?</h1>
+      <h1>¿CÓMO COMPRAR?</h1>
           <p>Comprar en SAEL Mayorista es simple y rápido.</p>
           <p>Seguí estos pasos para realizar tu pedido:</p>
         </header>
@@ -95,3 +88,5 @@ export default function HowToBuyPage() {
     </main>
   );
 }
+
+

@@ -10,9 +10,9 @@ export default function QuienesSomosPage() {
       <div className="about-copy-icon"><AppIcon name="team" /></div>
       <p className="about-lead">Sael Tendencia nació con un propósito: que cada mujer se sienta linda, segura y empoderada.</p>
       <p>Queremos que nuestras prendas acompañen tu esencia y te ayuden a expresarte tal como sos.</p>
-      <p>Este sueño empezó en familia y fue creciendo con nosotros. Inspirados por nuestros hijos, nació también Sael Kids, dando lugar a nuevos comienzos y aprendizajes.</p>
-      <p className="about-closing">Somos más que ropa: somos actitud, identidad y amor en cada detalle.</p>
+      <p>Este sueño empezó en familia y fue creciendo con nosotros. Inspirados por nuestros hijos nació también Sael Kids, una línea pensada para acompañar a las niñas en cada etapa, con prendas cómodas, alegres y llenas de personalidad.</p>
+      <p>Queremos que cada niña pueda sentirse libre, auténtica y feliz siendo ella misma, mientras descubre su propio estilo y vive cada momento con confianza.</p>
+      <p className="about-closing">Somos más que ropa: somos actitud, identidad, familia y amor en cada detalle.</p>
     </article>
-  
   </div></main>;
 }

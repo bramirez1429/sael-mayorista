@@ -68,7 +68,7 @@ const landingCards: LandingCard[] = [
     arrow: true,
     title: "Quiénes somos",
     description:
-      "Somos SAEL. Indumentaria para emprendedores y negocios que buscan variedad, calidad y diseño.",
+      "Somos SAEL. Indumentaria para emprendedores y negocios que buscan prendas con identidad, calidad y estilo.",
   },
   {
     id: "contacto",
