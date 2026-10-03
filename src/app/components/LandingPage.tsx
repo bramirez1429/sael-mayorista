@@ -2,6 +2,7 @@ import { SITE_CONFIG } from "../../config/site";
 import Link from "next/link";
 import Image from "next/image";
 import { AppIcon, type AppIconName } from "./AppIcon";
+import FloatingCatalogButton from "../../components/FloatingCatalogButton";
 
 const WHATSAPP_LINK = `https://wa.me/${SITE_CONFIG.whatsappNumber}`;
 
@@ -227,6 +228,7 @@ export default function LandingPage() {
 
         <small>© 2026 SAEL</small>
       </footer>
+      <FloatingCatalogButton />
     </main>
   );
 }
