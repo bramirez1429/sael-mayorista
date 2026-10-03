@@ -244,6 +244,13 @@ export default function CatalogGallery({
     ]);
     closeProduct();
   };
+  const removeProductSelection = (productId: string) => {
+    setSelected((current) => current.filter((product) => product.id !== productId));
+  };
+  const clearAllSelections = () => {
+    setSelected([]);
+    window.localStorage.removeItem(STORAGE_KEY);
+  };
   const sendOrder = async () => {
     if (selected.length === 0) return;
     const customer = await customerForm.validateFields();
@@ -329,6 +336,13 @@ export default function CatalogGallery({
       <Divider titlePlacement="center" plain>
         Arma tu pedido a eleccion
       </Divider>
+      {selected.length > 0 && (
+        <div className="catalog-clear-selections">
+          <Button type="default" danger onClick={clearAllSelections}>
+            Eliminar selecciones
+          </Button>
+        </div>
+      )}
       <Image.PreviewGroup>
         <div className="catalog-grid">
           {products.map((product) => {
@@ -366,6 +380,16 @@ export default function CatalogGallery({
                 >
                   {exists ? "Editar seleccion" : "Seleccionar"}
                 </Button>
+                {exists && (
+                  <Button
+                    type="link"
+                    danger
+                    className="product-remove-selection"
+                    onClick={() => removeProductSelection(product.id)}
+                  >
+                    Eliminar selección
+                  </Button>
+                )}
               </article>
             );
           })}

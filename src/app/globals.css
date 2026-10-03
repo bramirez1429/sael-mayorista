@@ -1494,6 +1494,34 @@ a {
 .product-card-selected {
   border-color: var(--red);
 }
+.catalog-clear-selections {
+  display: flex;
+  justify-content: flex-end;
+  margin: -4px 0 16px;
+}
+.catalog-clear-selections .ant-btn,
+.product-remove-selection.ant-btn {
+  border-radius: 8px;
+}
+.product-remove-selection.ant-btn {
+  display: block;
+  height: auto;
+  margin: 8px auto 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--red);
+  font-size: 12px;
+  line-height: 1.4;
+}
+.product-remove-selection.ant-btn:hover,
+.product-remove-selection.ant-btn:focus {
+  background: transparent;
+  color: var(--red);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .product-selection-controls {
   margin-top: 12px;
 }
