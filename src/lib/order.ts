@@ -51,6 +51,17 @@ export function generateOrderTicket() {
 export function buildWhatsAppMessage(
   ticket: string,
   products: SelectedProduct[],
+  customer?: {
+    name: string;
+    dni: string;
+    locality: string;
+    province: string;
+    postalCode: string;
+    email: string;
+    phone: string;
+    transport: string;
+    deliveryType: string;
+  },
 ) {
   const body = products.flatMap((product, index) => {
     const curves = product.variants
@@ -89,10 +100,29 @@ export function buildWhatsAppMessage(
       ),
     0,
   );
+  const customerLines = customer
+    ? [
+        "DATOS DEL CLIENTE",
+        "",
+        `Nombre: ${customer.name}`,
+        `DNI: ${customer.dni}`,
+        `Localidad: ${customer.locality}`,
+        `Provincia: ${customer.province}`,
+        `Codigo postal: ${customer.postalCode}`,
+        `Mail: ${customer.email}`,
+        `Telefono: ${customer.phone}`,
+        `Transporte: ${customer.transport}`,
+        `Entrega: ${customer.deliveryType}`,
+        "",
+      ]
+    : [];
   return [
     "PEDIDO SAEL MAYORISTA",
     "",
     `Ticket: ${ticket}`,
+    "",
+    ...customerLines,
+    "PEDIDO",
     "",
     ...body,
     `Total de productos: ${products.length}`,
@@ -101,5 +131,4 @@ export function buildWhatsAppMessage(
     "Quisiera consultar disponibilidad y finalizar el pedido.",
   ].join("\n");
 }
-
 

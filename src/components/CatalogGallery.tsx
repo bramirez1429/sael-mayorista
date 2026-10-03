@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Button, Divider, Drawer, Image, Modal } from "antd";
+import { Button, Divider, Drawer, Form, Image, Modal } from "antd";
 import type { CatalogProduct, ProductColor } from "../data/catalogProducts";
 import {
   catalogKidsSizes,
@@ -18,7 +18,7 @@ import {
   type SelectedProduct,
   type SelectedVariant,
 } from "../lib/order";
-import { link } from "fs";
+import CustomerOrderForm, { type CustomerOrderData } from "./CustomerOrderForm";
 
 const STORAGE_KEY = "sael-selected-products";
 type Mode = "curve" | "unit";
@@ -136,6 +136,8 @@ export default function CatalogGallery({
     AssortedColorSelection[]
   >([]);
   const [assortedError, setAssortedError] = useState("");
+  const [customerOpen, setCustomerOpen] = useState(false);
+  const [customerForm] = Form.useForm<CustomerOrderData>();
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
@@ -242,9 +244,10 @@ export default function CatalogGallery({
     ]);
     closeProduct();
   };
-  const sendOrder = () => {
+  const sendOrder = async () => {
     if (selected.length === 0) return;
-    const message = buildWhatsAppMessage(generateOrderTicket(), selected);
+    const customer = await customerForm.validateFields();
+    const message = buildWhatsAppMessage(generateOrderTicket(), selected, customer);
     window.open(
       `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`,
       "_blank",
@@ -252,6 +255,8 @@ export default function CatalogGallery({
     );
     setSelected([]);
     window.localStorage.removeItem(STORAGE_KEY);
+    customerForm.resetFields();
+    setCustomerOpen(false);
     setOrderOpen(false);
   };
   const clearOrder = () => {
@@ -421,7 +426,7 @@ export default function CatalogGallery({
                         onClick={() => toggleColor(color)}
                       >
                         <span style={{ backgroundColor: color.hex, border:'solid 1px #e4e4e4'}}>
-                          {active ? "X" : ""}
+                          {active ? "✔" : ""}
                         </span>
                         {color.name}
                       </Button>
@@ -565,7 +570,7 @@ export default function CatalogGallery({
         title="PEDIDO SAEL"
         open={orderOpen}
         onClose={() => setOrderOpen(false)}
-        width={420}
+        size={420}
       >
         <div className="order-items">
           {selected.map((product) => (
@@ -597,9 +602,9 @@ export default function CatalogGallery({
           type="primary"
           block
           className="order-whatsapp-button"
-          onClick={sendOrder}
+          onClick={() => setCustomerOpen(true)}
         >
-          Enviar pedido por WhatsApp
+          Continuar con datos
         </Button>
         <Button type="link"
           block
@@ -610,6 +615,23 @@ export default function CatalogGallery({
           Vaciar pedido
         </Button>
       </Drawer>
+      <Modal
+        open={customerOpen}
+        title="Datos para tu pedido"
+        onCancel={() => setCustomerOpen(false)}
+        destroyOnHidden
+        width={520}
+        className="customer-order-modal"
+        footer={[
+          <Button key="cancel" onClick={() => setCustomerOpen(false)}>Cancelar</Button>,
+          <Button key="send" type="primary" className="order-whatsapp-button" onClick={sendOrder}>Enviar pedido por WhatsApp</Button>,
+        ]}
+      >
+        <p className="customer-order-intro">Completa tus datos para coordinar el pedido y el envio.</p>
+        <Form form={customerForm} layout="vertical" requiredMark="optional">
+          <CustomerOrderForm />
+        </Form>
+      </Modal>
     </>
   );
 }
