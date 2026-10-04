@@ -14,6 +14,31 @@ export const runtime = "nodejs";
 
 const allowedExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
 const imagesPath = path.join(process.cwd(), "public", "images", "catalogo");
+const adminDashboardOrigin = process.env.ADMIN_DASHBOARD_ORIGIN?.trim();
+
+function corsHeaders() {
+  return {
+    "Access-Control-Allow-Origin": adminDashboardOrigin || "",
+    "Access-Control-Allow-Methods": "GET, POST, PATCH, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Allow-Credentials": "true",
+    Vary: "Origin",
+  };
+}
+
+function jsonResponse(body: unknown, status = 200) {
+  return NextResponse.json(body, { status, headers: corsHeaders() });
+}
+
+function originError(request: Request) {
+  if (!adminDashboardOrigin) {
+    return jsonResponse({ error: "Falta configurar ADMIN_DASHBOARD_ORIGIN." }, 500);
+  }
+  if (request.headers.get("origin") !== adminDashboardOrigin) {
+    return jsonResponse({ error: "Origin no autorizado." }, 403);
+  }
+  return null;
+}
 
 function slugify(value: string) {
   return value
@@ -56,53 +81,75 @@ async function uniqueFilename(base: string, extension: string) {
 }
 
 export async function POST(request: Request) {
-  const formData = await request.formData();
-  const file = formData.get("image");
-  if (!(file instanceof File) || file.size === 0) {
-    return NextResponse.json({ error: "Selecciona una imagen." }, { status: 400 });
+  const unauthorized = originError(request);
+  if (unauthorized) return unauthorized;
+
+  try {
+    const formData = await request.formData();
+    const file = formData.get("image");
+    if (!(file instanceof File) || file.size === 0) {
+      return jsonResponse({ error: "Selecciona una imagen." }, 400);
+    }
+
+    const extension = path.extname(file.name).toLowerCase();
+    if (!allowedExtensions.has(extension) || !file.type.startsWith("image/")) {
+      return jsonResponse({ error: "El archivo debe ser una imagen válida." }, 400);
+    }
+
+    const colors = validColors(formData.get("colors"));
+    if (!colors.length) {
+      return jsonResponse({ error: "Selecciona al menos un color." }, 400);
+    }
+
+    const suppliedName = String(formData.get("name") || "").trim();
+    const name = suppliedName || titleFromFilename(file.name);
+    const base = slugify(name);
+    const filename = await uniqueFilename(base, extension);
+    await fs.mkdir(imagesPath, { recursive: true });
+    await fs.writeFile(path.join(imagesPath, filename), Buffer.from(await file.arrayBuffer()));
+
+    const product: CatalogProduct = {
+      id: `${slugify(path.parse(filename).name)}-${randomUUID().slice(0, 8)}`,
+      name,
+      image: `/images/catalogo/${filename}`,
+      colors,
+    };
+    const products = await getCatalogProducts();
+    await saveCatalogProducts([...products, product]);
+    return jsonResponse(product, 201);
+  } catch (error) {
+    console.error("Error al guardar la imagen del catálogo:", error);
+    return jsonResponse({ error: "No se pudo guardar la imagen" }, 500);
   }
-
-  const extension = path.extname(file.name).toLowerCase();
-  if (!allowedExtensions.has(extension) || !file.type.startsWith("image/")) {
-    return NextResponse.json({ error: "El archivo debe ser una imagen válida." }, { status: 400 });
-  }
-
-  const colors = validColors(formData.get("colors"));
-  if (!colors.length) {
-    return NextResponse.json({ error: "Selecciona al menos un color." }, { status: 400 });
-  }
-
-  const suppliedName = String(formData.get("name") || "").trim();
-  const name = suppliedName || titleFromFilename(file.name);
-  const base = slugify(name);
-  const filename = await uniqueFilename(base, extension);
-  await fs.mkdir(imagesPath, { recursive: true });
-  await fs.writeFile(path.join(imagesPath, filename), Buffer.from(await file.arrayBuffer()));
-
-  const product: CatalogProduct = {
-    id: `${slugify(path.parse(filename).name)}-${randomUUID().slice(0, 8)}`,
-    name,
-    image: `/images/catalogo/${filename}`,
-    colors,
-  };
-  const products = await getCatalogProducts();
-  await saveCatalogProducts([...products, product]);
-  return NextResponse.json(product, { status: 201 });
 }
 
 export async function PUT(request: Request) {
-  const body = (await request.json()) as { id?: string; colors?: string[] };
-  const colors = [...new Set(body.colors || [])].filter((color): color is CatalogColor =>
-    CATALOG_COLORS.includes(color as CatalogColor),
-  );
-  if (!body.id || !colors.length) {
-    return NextResponse.json({ error: "Producto y al menos un color son obligatorios." }, { status: 400 });
-  }
+  const unauthorized = originError(request);
+  if (unauthorized) return unauthorized;
 
-  const products = await getCatalogProducts();
-  const index = products.findIndex((product) => product.id === body.id);
-  if (index === -1) return NextResponse.json({ error: "Imagen no encontrada." }, { status: 404 });
-  products[index] = { ...products[index], colors };
-  await saveCatalogProducts(products);
-  return NextResponse.json(products[index]);
+  try {
+    const body = (await request.json()) as { id?: string; colors?: string[] };
+    const colors = [...new Set(body.colors || [])].filter((color): color is CatalogColor =>
+      CATALOG_COLORS.includes(color as CatalogColor),
+    );
+    if (!body.id || !colors.length) {
+      return jsonResponse({ error: "Producto y al menos un color son obligatorios." }, 400);
+    }
+
+    const products = await getCatalogProducts();
+    const index = products.findIndex((product) => product.id === body.id);
+    if (index === -1) return jsonResponse({ error: "Imagen no encontrada." }, 404);
+    products[index] = { ...products[index], colors };
+    await saveCatalogProducts(products);
+    return jsonResponse(products[index]);
+  } catch (error) {
+    console.error("Error al actualizar los colores del catálogo:", error);
+    return jsonResponse({ error: "No se pudieron actualizar los colores" }, 500);
+  }
+}
+
+export async function OPTIONS(request: Request) {
+  const unauthorized = originError(request);
+  if (unauthorized) return unauthorized;
+  return new NextResponse(null, { status: 204, headers: corsHeaders() });
 }
