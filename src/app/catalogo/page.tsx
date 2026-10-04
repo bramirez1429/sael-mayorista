@@ -1,37 +1,28 @@
-import fs from "node:fs/promises";
-import path from "node:path";
 import Link from "next/link";
 import CatalogGallery from "../../components/CatalogGallery";
+import { getCatalogProducts as getStoredCatalogProducts } from "../../lib/catalog";
 import {
   catalogProductColors,
   type CatalogProduct,
 } from "../../data/catalogProducts";
 
-const IMAGE_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
-
-function titleFromFilename(filename: string) {
-  return filename
-    .replace(/\.[^/.]+$/, "")
-    .replace(/[-_]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .replace(/\b\w/g, (letter) => letter.toUpperCase());
-}
-
 async function getCatalogProducts(): Promise<CatalogProduct[]> {
-  const catalogDir = path.join(process.cwd(), "public", "images", "catalogo");
-  const files = await fs.readdir(catalogDir);
-  return files
-    .filter((file) => IMAGE_EXTENSIONS.has(path.extname(file).toLowerCase()))
-    .sort((a, b) => a.localeCompare(b, "es", { sensitivity: "base" }))
-    .map((file) => ({
-      id: file,
-      image: `/images/catalogo/${encodeURIComponent(file)}`,
-      title: titleFromFilename(file),
+  const colorsByName = new Map(
+    catalogProductColors.map((color) => [color.name.toLowerCase(), color]),
+  );
+  const products = await getStoredCatalogProducts();
+  return products.map((product) => ({
+      id: product.id,
+      image: product.image,
+      title: product.name,
       description: "",
-      colors: catalogProductColors,
+      colors: product.colors
+        .map((color) => colorsByName.get(color))
+        .filter((color): color is (typeof catalogProductColors)[number] => Boolean(color)),
     }));
 }
+
+export const dynamic = "force-dynamic";
 
 export default async function CatalogoPage() {
   const products = await getCatalogProducts();
