@@ -44,21 +44,16 @@ async function getInitialCatalog(): Promise<CatalogProduct[]> {
 }
 
 async function getStateBlobs() {
-  try {
-    const blobs = [];
-    let cursor: string | undefined;
-    do {
-      const result = cursor
-        ? await list({ prefix: statePrefix, cursor })
-        : await list({ prefix: statePrefix });
-      blobs.push(...result.blobs);
-      cursor = result.hasMore ? result.cursor : undefined;
-    } while (cursor);
-    return blobs;
-  } catch (error) {
-    if (!process.env.BLOB_READ_WRITE_TOKEN) return [];
-    throw error;
-  }
+  const blobs = [];
+  let cursor: string | undefined;
+  do {
+    const result = cursor
+      ? await list({ prefix: statePrefix, cursor })
+      : await list({ prefix: statePrefix });
+    blobs.push(...result.blobs);
+    cursor = result.hasMore ? result.cursor : undefined;
+  } while (cursor);
+  return blobs;
 }
 
 export async function getCatalogProducts(): Promise<CatalogProduct[]> {
