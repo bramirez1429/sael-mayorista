@@ -8,7 +8,7 @@ import {
   saveCatalogProducts,
   type CatalogColor,
   type CatalogProduct,
-} from "../../../../../lib/catalog";
+} from "../../../../lib/catalog";
 
 export const runtime = "nodejs";
 
