@@ -746,6 +746,26 @@ a {
 .catalog-card::after {
   pointer-events: none;
 }
+.admin-catalog-page { min-height: 100vh; background: var(--canvas); }
+.admin-catalog-shell { max-width: 1120px; margin: 0 auto; padding: 28px 20px 72px; }
+.admin-catalog-hero { padding: 72px 0 34px; }
+.admin-catalog-hero h1 { font-size: clamp(42px, 9vw, 84px); line-height: .95; letter-spacing: -.07em; margin: 0 0 22px; }
+.admin-catalog-hero p { color: var(--muted); font-size: 17px; margin: 0; }
+.admin-upload-card, .admin-product-card { background: var(--white); border: 1px solid #e8e8e8; border-radius: 20px; box-shadow: 0 8px 28px rgba(17,17,17,.035); }
+.admin-upload-card { display: grid; gap: 16px; padding: 24px; margin-bottom: 24px; }
+.admin-upload-card h2 { margin: 0; font-size: 24px; }
+.admin-upload-card label { display: grid; gap: 7px; font-size: 13px; font-weight: 600; }
+.admin-upload-card input[type=file] { border: 1px dashed #cfcfcf; border-radius: 10px; padding: 11px; font-weight: 400; }
+.admin-color-checks { display: flex; flex-wrap: wrap; gap: 12px; border: 0; margin: 0; padding: 0; }
+.admin-color-checks legend { width: 100%; padding: 0; margin-bottom: 2px; font-size: 13px; font-weight: 600; }
+.admin-catalog-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.admin-product-card { overflow: hidden; padding-bottom: 18px; }
+.admin-product-card img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--canvas); }
+.admin-product-card h2, .admin-product-card .admin-color-checks, .admin-save-button { margin-left: 16px; margin-right: 16px; }
+.admin-product-card h2 { font-size: 17px; margin-top: 16px; margin-bottom: 14px; }
+.admin-save-button { width: calc(100% - 32px); margin-top: 16px; }
+@media (max-width: 900px) { .admin-catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .admin-catalog-shell { padding: 22px 16px 52px; } .admin-catalog-hero { padding: 40px 0 30px; } .admin-catalog-hero h1 { font-size: 48px; } .admin-catalog-grid { grid-template-columns: 1fr; } }
 .size-chart-grid {
   display: flex;
   flex-direction: column;
