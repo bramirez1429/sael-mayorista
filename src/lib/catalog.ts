@@ -44,16 +44,21 @@ async function getInitialCatalog(): Promise<CatalogProduct[]> {
 }
 
 async function getStateBlobs() {
-  const blobs = [];
-  let cursor: string | undefined;
-  do {
-    const result = cursor
-      ? await list({ prefix: statePrefix, cursor })
-      : await list({ prefix: statePrefix });
-    blobs.push(...result.blobs);
-    cursor = result.hasMore ? result.cursor : undefined;
-  } while (cursor);
-  return blobs;
+  try {
+    const blobs = [];
+    let cursor: string | undefined;
+    do {
+      const result = cursor
+        ? await list({ prefix: statePrefix, cursor })
+        : await list({ prefix: statePrefix });
+      blobs.push(...result.blobs);
+      cursor = result.hasMore ? result.cursor : undefined;
+    } while (cursor);
+    return blobs;
+  } catch (error) {
+    console.warn("Vercel Blob no disponible, usando catalogo inicial.", error);
+    return [];
+  }
 }
 
 export async function getCatalogProducts(): Promise<CatalogProduct[]> {
