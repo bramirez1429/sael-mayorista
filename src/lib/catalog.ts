@@ -14,6 +14,8 @@ export type CatalogProduct = {
 };
 
 const catalogPath = path.join(process.cwd(), "data", "catalog.json");
+const localImagePrefix = "/images/catalogo/";
+const localImagesPath = path.join(process.cwd(), "public", "images", "catalogo");
 const statePrefix = "catalogo/state/";
 
 export function parseCatalogColors(value: unknown): CatalogColor[] {
@@ -32,11 +34,30 @@ export function parseCatalogColors(value: unknown): CatalogColor[] {
   );
 }
 
+async function filterCatalogProducts(products: CatalogProduct[]): Promise<CatalogProduct[]> {
+  const checkedProducts = await Promise.all(
+    products.map(async (product) => {
+      if (!product.image.startsWith(localImagePrefix)) return product;
+
+      const filename = product.image.slice(localImagePrefix.length);
+      if (!filename || filename.includes("/") || filename.includes("\\")) return null;
+
+      try {
+        await fs.access(path.join(localImagesPath, filename));
+        return product;
+      } catch {
+        return null;
+      }
+    }),
+  );
+  return checkedProducts.filter((product): product is CatalogProduct => product !== null);
+}
+
 async function getInitialCatalog(): Promise<CatalogProduct[]> {
   try {
     const content = await fs.readFile(catalogPath, "utf8");
     const products = JSON.parse(content) as CatalogProduct[];
-    return Array.isArray(products) ? products : [];
+    return Array.isArray(products) ? filterCatalogProducts(products) : [];
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") return [];
     throw error;
@@ -71,7 +92,7 @@ export async function getCatalogProducts(): Promise<CatalogProduct[]> {
   const response = await fetch(latest.url, { cache: "no-store" });
   if (!response.ok) throw new Error("No se pudo leer el snapshot del catálogo.");
   const products = (await response.json()) as CatalogProduct[];
-  return Array.isArray(products) ? products : [];
+  return Array.isArray(products) ? filterCatalogProducts(products) : [];
 }
 
 export async function saveCatalogProducts(products: CatalogProduct[]) {
