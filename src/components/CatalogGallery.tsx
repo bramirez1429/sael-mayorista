@@ -2,7 +2,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Button, Divider, Drawer, Form, Image, Modal } from "antd";
+import Image from "next/image";
+import { Button, Divider, Drawer, Form, Modal } from "antd";
 import type { CatalogProduct, ProductColor } from "../data/catalogProducts";
 import {
   catalogKidsSizes,
@@ -343,8 +344,7 @@ export default function CatalogGallery({
           </Button>
         </div>
       )}
-      <Image.PreviewGroup>
-        <div className="catalog-grid">
+      <div className="catalog-grid">
           {products.map((product) => {
             const exists = selected.some((item) => item.id === product.id);
             return (
@@ -353,7 +353,12 @@ export default function CatalogGallery({
                 key={product.id}
               >
                 <div className="product-image-wrapper">
-                  <Image src={product.image} alt={product.title} preview />
+                  <Image
+                    src={product.image}
+                    alt={product.title}
+                    fill
+                    sizes="(max-width: 899px) 50vw, 25vw"
+                  />
                 </div>
                 <h2>{product.title}</h2>
                 <p>{product.description}</p>
@@ -394,7 +399,6 @@ export default function CatalogGallery({
             );
           })}
         </div>
-      </Image.PreviewGroup>
       {selected.length > 0 && (
         <div className="selected-products-bar">
           <span>
