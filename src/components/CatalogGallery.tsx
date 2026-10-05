@@ -139,6 +139,8 @@ export default function CatalogGallery({
   const [assortedError, setAssortedError] = useState("");
   const [customerOpen, setCustomerOpen] = useState(false);
   const [customerForm] = Form.useForm<CustomerOrderData>();
+  const [previewIndex, setPreviewIndex] = useState<number | null>(null);
+  const [zoom, setZoom] = useState(1);
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
@@ -155,6 +157,31 @@ export default function CatalogGallery({
     if (loaded)
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(selected));
   }, [loaded, selected]);
+
+  useEffect(() => {
+    if (previewIndex === null) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setPreviewIndex(null);
+        setZoom(1);
+      }
+      if (event.key === "ArrowLeft" && products.length > 1) {
+        setPreviewIndex((current) => current === null ? current : (current - 1 + products.length) % products.length);
+        setZoom(1);
+      }
+      if (event.key === "ArrowRight" && products.length > 1) {
+        setPreviewIndex((current) => current === null ? current : (current + 1) % products.length);
+        setZoom(1);
+      }
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [previewIndex, products.length]);
 
   const totalUnits = useMemo(
     () => selected.reduce((sum, product) => sum + getProductUnits(product), 0),
@@ -345,21 +372,28 @@ export default function CatalogGallery({
         </div>
       )}
       <div className="catalog-grid">
-          {products.map((product) => {
+          {products.map((product, index) => {
             const exists = selected.some((item) => item.id === product.id);
             return (
               <article
                 className={`product-card${exists ? " product-card-selected" : ""}`}
                 key={product.id}
               >
-                <div className="product-image-wrapper">
+                <button
+                  className="catalog-image-button"
+                  type="button"
+                  aria-label={`Abrir imagen de ${product.title}`}
+                  onClick={() => { setPreviewIndex(index); setZoom(1); }}
+                >
+                  <div className="product-image-wrapper">
                   <Image
                     src={product.image}
                     alt={product.title}
                     fill
                     sizes="(max-width: 899px) 50vw, 25vw"
                   />
-                </div>
+                  </div>
+                </button>
                 <h2>{product.title}</h2>
                 <p>{product.description}</p>
                 <div
@@ -399,6 +433,31 @@ export default function CatalogGallery({
             );
           })}
         </div>
+      {previewIndex !== null && products[previewIndex] && (
+        <div className="catalog-lightbox" role="dialog" aria-modal="true" aria-label={products[previewIndex].title} onClick={() => { setPreviewIndex(null); setZoom(1); }}>
+          <button className="catalog-lightbox-close" type="button" aria-label="Cerrar imagen" onClick={() => { setPreviewIndex(null); setZoom(1); }}>×</button>
+          {products.length > 1 && <>
+            <button className="catalog-lightbox-prev" type="button" aria-label="Imagen anterior" onClick={(event) => { event.stopPropagation(); setPreviewIndex((current) => current === null ? current : (current - 1 + products.length) % products.length); setZoom(1); }}>←</button>
+            <button className="catalog-lightbox-next" type="button" aria-label="Imagen siguiente" onClick={(event) => { event.stopPropagation(); setPreviewIndex((current) => current === null ? current : (current + 1) % products.length); setZoom(1); }}>→</button>
+          </>}
+          <div className="catalog-lightbox-content" onClick={(event) => event.stopPropagation()}>
+            <div className="catalog-lightbox-image-wrapper" onDoubleClick={() => setZoom((current) => current === 1 ? 2 : 1)}>
+              <Image
+                src={products[previewIndex].image}
+                alt={products[previewIndex].title}
+                fill
+                sizes="100vw"
+                className="catalog-lightbox-image"
+                style={{ transform: `scale(${zoom})` }}
+              />
+            </div>
+            <div className="catalog-lightbox-controls">
+              <button type="button" aria-label="Alejar" onClick={() => setZoom((current) => Math.max(1, current - 0.25))}>−</button>
+              <button type="button" aria-label="Acercar" onClick={() => setZoom((current) => Math.min(3, current + 0.25))}>+</button>
+            </div>
+          </div>
+        </div>
+      )}
       {selected.length > 0 && (
         <div className="selected-products-bar">
           <span>
