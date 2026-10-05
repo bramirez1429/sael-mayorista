@@ -39,6 +39,21 @@ export default async function CatalogoPage() {
           <h1>CATÁLOGO</h1>
           <p>Conocé nuestra colección mayorista.</p>
         </header>
+        <section aria-label="Precios mayoristas" style={{ marginBottom: 36 }}>
+          <h2 style={{ color: "#6b6b6b", fontSize: 12, letterSpacing: "0.16em", margin: "0 0 14px", textTransform: "uppercase" }}>
+            Precios mayoristas
+          </h2>
+          <div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+            <article style={{ background: "#ffffff", border: "1px solid #e8e8e8", borderRadius: 16, padding: "18px 20px" }}>
+              <span style={{ color: "#6b6b6b", display: "block", fontSize: 14, marginBottom: 6 }}>Precio por curva</span>
+              <strong style={{ color: "#E30613", display: "block", fontSize: 30, letterSpacing: "-0.04em" }}>$7.500</strong>
+            </article>
+            <article style={{ background: "#ffffff", border: "1px solid #e8e8e8", borderRadius: 16, padding: "18px 20px" }}>
+              <span style={{ color: "#6b6b6b", display: "block", fontSize: 14, marginBottom: 6 }}>Precio a elección</span>
+              <strong style={{ color: "#E30613", display: "block", fontSize: 30, letterSpacing: "-0.04em" }}>$7.700</strong>
+            </article>
+          </div>
+        </section>
         <section aria-label="Productos del catálogo">
           <CatalogGallery products={products} />
         </section>
